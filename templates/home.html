@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <meta http-equiv="refresh" content="2"/> -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    #container {
+ width:400px;
+ margin:0px auto;
+ padding:40px 0;
+}
+#scrollbox {
+ width:400px;
+ height:300px;
+ overflow:auto; overflow-x:hidden;
+}
+#container > p{
+ background:#eee;
+ color:#666;
+ font-family:Arial, sans-serif; font-size:0.75em;
+ padding:5px; margin:0;
+ text-align:rightright;
+}
+    </style>
+</head>
+<body>
+
+    <h1>
+        MEAT FRESHNESS
+    </h1>
+        <div id="container">  
+                <div id="scrollbox" >  
+                    <div id="content" >
+                        {% for i in data%}  
+                        <h1> {{i['value']}} Present value</h1>
+                            {% endfor %} 
+                    </div>  
+                </div>  
+                <p><span id="status" ></span></p> 
+
+        <script>
+        $('document').ready(function(){  
+  updatestatus();  
+  scrollalert();  
+});  
+function updatestatus(){  
+  //Show number of loaded items  
+  var totalItems=$('#content p').length;  
+  $('#status').text('Loaded '+totalItems+' Items');  
+}  
+function scrollalert(){  
+  var scrolltop=$('#scrollbox').attr('scrollTop');  
+  var scrollheight=$('#scrollbox').attr('scrollHeight');  
+  var windowheight=$('#scrollbox').attr('clientHeight');  
+  var scrolloffset=20;  
+  if(scrolltop>=(scrollheight-(windowheight+scrolloffset)))  
+   {  
+     //fetch new items  
+     $('#status').text('Loading more items...');  
+     $.get('new-items.html', '', function(newitems){  
+        $('#content').append(newitems);  
+        updatestatus();  
+    });  
+   }  
+ setTimeout('scrollalert();', 1500);  
+}
+        </script>
+</body>
+</html>
